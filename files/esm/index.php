@@ -3,7 +3,9 @@ require 'autoload.php';
 $Config = new Config();
 $update = $Config->checkUpdate();
 ?>
+
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -15,72 +17,69 @@ $update = $Config->checkUpdate();
     <!--[if IE]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <script src="js/plugins/jquery-2.1.0.min.js" type="text/javascript"></script>
+    <script src="js/plugins/jquery-3.6.0.min.js" type="text/javascript"></script>
     <script src="js/plugins/jquery.knob.js" type="text/javascript"></script>
     <script src="js/esm.js" type="text/javascript"></script>
-    <script>
-    $(function(){
-        $('.gauge').knob({
-            'fontWeight': 'normal',
-            'format' : function (value) {
-                return value + '%';
-            }
-        });
+    
+<script>
+$(function(){
+$('.gauge').knob({
+    'fontWeight': 'normal',
 
-        $('a.reload').click(function(e){
+'format' :
+function (value) {
+        return value + '%';
+}
+});
+
+$('a.reload').click(function(e) {
             e.preventDefault();
-        });
+});
 
-        esm.getAll();
+		esm.getAll();
 
-        <?php if ($Config->get('esm:auto_refresh') > 0): ?>
-            setInterval(function(){ esm.getAll(); }, <?php echo $Config->get('esm:auto_refresh') * 1000; ?>);
-        <?php endif; ?>
-    });
-    </script>
+    <?php if ($Config->get('esm:auto_refresh') > 0): ?>
+		setInterval(function(){ esm.getAll(); }, <?php echo $Config->get('esm:auto_refresh') * 1000; ?>);
+    <?php endif; ?>
+});
+</script>
 </head>
 
 <body class="theme-<?php echo $Config->get('esm:theme'); ?>">
-
 <nav role="main">
-    <div id="appname">
+<div id="appname">
         <a href="index.php"><span class="icon-gauge"></span>eSM</a>
         <a href="<?php echo $Config->get('esm:website'); ?>"><span class="subtitle">eZ Server Monitor - v<?php echo $Config->get('esm:version'); ?></span></a>
-    </div>
+</div>
 
-    <div id="hostname">
-        <?php
-        if ($Config->get('esm:custom_title') != '')
-            echo $Config->get('esm:custom_title');
-        else
-            echo Misc::getHostname().' - '.Misc::getLanIP();
-        ?>
-    </div>
+<div id="hostname">
+<?php
+if ($Config->get('esm:custom_title') != '')
+    echo $Config->get('esm:custom_title');
+else
+    echo Misc::getHostname().' - '.Misc::getLanIP();
+?>
+</div>
 
     <?php if (!is_null($update)): ?>
-        <div id="update">
+<div id="update">
             <a href="<?php echo $update['fullpath']; ?>">New version available (<?php echo $update['availableVersion']; ?>) ! Click here to download</a>
         </div>
     <?php endif; ?>
 
-    <ul>
-        <li><a href="#" class="reload" onclick="esm.reloadBlock('all');"><span class="icon-cycle"></span></a></li>
-    </ul>
+	<ul><li><a href="#" class="reload" onclick="esm.reloadBlock('all');"><span class="icon-cycle"></span></a></li></ul>
 </nav>
 
-
 <div id="main-container">
+<div class="box column-left" id="esm-system">
+<div class="box-header">
+    <h1>System</h1>
+            
+	<ul><li><a href="#" class="reload" onclick="esm.reloadBlock('system');"><span class="icon-cycle"></span></a></li></ul>
+</div>
 
-    <div class="box column-left" id="esm-system">
-        <div class="box-header">
-            <h1>System</h1>
-            <ul>
-                <li><a href="#" class="reload" onclick="esm.reloadBlock('system');"><span class="icon-cycle"></span></a></li>
-            </ul>
-        </div>
-
-        <div class="box-content">
-            <table class="firstBold">
+<div class="box-content">
+<table class="firstBold">
                 <tbody>
                     <tr>
                         <td>Hostname</td>
@@ -182,12 +181,10 @@ $update = $Config->checkUpdate();
                     <?php endif; ?>
                 </tbody>
             </table>
-        </div>
-    </div>
+</div>
+</div>
 
-
-
-    <div class="box column-left" id="esm-network">
+<div class="box column-left" id="esm-network">
         <div class="box-header">
             <h1>Network usage</h1>
             <ul>
@@ -213,17 +210,13 @@ $update = $Config->checkUpdate();
 
     <div class="cls"></div>
 
+<div class="box" id="esm-disk">
+<div class="box-header">
+		<h1>Disk usage</h1>
+	<ul><li><a href="#" class="reload" onclick="esm.reloadBlock('disk');"><span class="icon-cycle"></span></a></li></ul>
+</div>
 
-
-    <div class="box" id="esm-disk">
-        <div class="box-header">
-            <h1>Disk usage</h1>
-            <ul>
-                <li><a href="#" class="reload" onclick="esm.reloadBlock('disk');"><span class="icon-cycle"></span></a></li>
-            </ul>
-        </div>
-
-        <div class="box-content">
+<div class="box-content">
             <table>
                 <thead>
                     <tr>
@@ -349,36 +342,25 @@ $update = $Config->checkUpdate();
                 <table>
                     <tbody></tbody>
                 </table>
-            </div>
-        </div>
-
-
-
-
-        <div class="box t-center" style="margin: 0 33%;" id="esm-ping">
-            <div class="box-header">
-                <h1>Ping</h1>
-                <ul>
-                    <li><a href="#" class="reload" onclick="esm.reloadBlock('ping');"><span class="icon-cycle"></span></a></li>
-                </ul>
-            </div>
-
-            <div class="box-content">
-                <table>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
-
-    </div>
-
-    
-
-    <div class="cls"></div>
-
+</div>
 </div>
 
+<div class="box t-center" style="margin: 0 33%;" id="esm-ping">
+<div class="box-header">
+        <h1>Ping</h1>
+	<ul><li><a href="#" class="reload" onclick="esm.reloadBlock('ping');"><span class="icon-cycle"></span></a></li></ul>
+</div>
 
+<div class="box-content">
+<table>
+    <tbody></tbody>
+</table>
+</div>
+</div>
+</div>
+
+    <div class="cls"></div>
+</div>
 
 </body>
 </html>
